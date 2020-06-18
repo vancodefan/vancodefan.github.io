@@ -1,0 +1,339 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>用科大讯飞的语音库实现语音唤醒转写与生成 </title><link href='https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color:#ffffff; --text-color:#333333; --select-text-bg-color:#B5D6FC; --select-text-font-color:auto; --monospace:"Lucida Console",Consolas,"Courier",monospace; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; tab-size: 4; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; overflow-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 40px; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export li, .typora-export p { white-space: pre-wrap; }
+@media screen and (max-width: 500px) {
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  #write { padding-left: 20px; padding-right: 20px; }
+  .CodeMirror-sizer { margin-left: 0px !important; }
+  .CodeMirror-gutters { display: none !important; }
+}
+#write li > figure:last-child { margin-bottom: 0.5rem; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; vertical-align: middle; }
+button, input, select, textarea { color: inherit; font: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p { position: relative; }
+p { line-height: inherit; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 2; }
+p { orphans: 4; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.7); color: rgb(85, 85, 85); border-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px !important; }
+tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 32px; }
+.CodeMirror-gutters { border-right: 0px; background-color: inherit; }
+.CodeMirror-linenumber { user-select: none; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background: inherit; position: relative !important; }
+.md-diagram-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; background: 0px 0px; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print {
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid; break-before: avoid; }
+  #write { margin-top: 0px; padding-top: 0px; border-color: transparent !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  html.blink-to-pdf { font-size: 13px; }
+  .typora-export #write { padding-left: 32px; padding-right: 32px; padding-bottom: 0px; break-after: avoid; }
+  .typora-export #write::after { height: 0px; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background: rgb(204, 204, 204); display: block; overflow-x: hidden; }
+p > .md-image:only-child:not(.md-img-error) img, p > img:only-child { display: block; margin: auto; }
+p > .md-image:only-child { display: inline-block; width: 100%; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); border: none; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) {
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.8; font-family: var(--monospace); }
+code { text-align: left; vertical-align: initial; }
+a.md-print-anchor { white-space: pre !important; border-width: initial !important; border-style: none !important; border-color: initial !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; background: 0px 0px !important; text-decoration: initial !important; text-shadow: initial !important; }
+.md-inline-math .MathJax_SVG .noError { display: none !important; }
+.html-for-mac .inline-math-svg .MathJax_SVG { vertical-align: 0.2px; }
+.md-math-block .MathJax_SVG_Display { text-align: center; margin: 0px; position: relative; text-indent: 0px; max-width: none; max-height: none; min-height: 0px; min-width: 100%; width: auto; overflow-y: hidden; display: block !important; }
+.MathJax_SVG_Display, .md-inline-math .MathJax_SVG_Display { width: auto; margin: inherit; display: inline-block !important; }
+.MathJax_SVG .MJX-monospace { font-family: var(--monospace); }
+.MathJax_SVG .MJX-sans-serif { font-family: sans-serif; }
+.MathJax_SVG { display: inline; font-style: normal; font-weight: 400; line-height: normal; zoom: 90%; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; overflow-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px; }
+.MathJax_SVG * { transition: none 0s ease 0s; }
+.MathJax_SVG_Display svg { vertical-align: middle !important; margin-bottom: 0px !important; margin-top: 0px !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="mermaid"] svg, [lang="flow"] svg { max-width: 100%; height: auto; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+svg[id^="mermaidChart"] { line-height: 1em; }
+
+
+:root { --side-bar-bg-color: #fafafa; --control-text-color: #777; }
+html { font-size: 16px; }
+body { font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; color: rgb(51, 51, 51); line-height: 1.6; }
+#write { max-width: 860px; margin: 0px auto; padding: 30px 30px 100px; }
+#write > ul:first-child, #write > ol:first-child { margin-top: 30px; }
+a { color: rgb(65, 131, 196); }
+h1, h2, h3, h4, h5, h6 { position: relative; margin-top: 1rem; margin-bottom: 1rem; font-weight: bold; line-height: 1.4; cursor: text; }
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor { text-decoration: none; }
+h1 tt, h1 code { font-size: inherit; }
+h2 tt, h2 code { font-size: inherit; }
+h3 tt, h3 code { font-size: inherit; }
+h4 tt, h4 code { font-size: inherit; }
+h5 tt, h5 code { font-size: inherit; }
+h6 tt, h6 code { font-size: inherit; }
+h1 { padding-bottom: 0.3em; font-size: 2.25em; line-height: 1.2; border-bottom: 1px solid rgb(238, 238, 238); }
+h2 { padding-bottom: 0.3em; font-size: 1.75em; line-height: 1.225; border-bottom: 1px solid rgb(238, 238, 238); }
+h3 { font-size: 1.5em; line-height: 1.43; }
+h4 { font-size: 1.25em; }
+h5 { font-size: 1em; }
+h6 { font-size: 1em; color: rgb(119, 119, 119); }
+p, blockquote, ul, ol, dl, table { margin: 0.8em 0px; }
+li > ol, li > ul { margin: 0px; }
+hr { height: 2px; padding: 0px; margin: 16px 0px; background-color: rgb(231, 231, 231); border: 0px none; overflow: hidden; box-sizing: content-box; }
+li p.first { display: inline-block; }
+ul, ol { padding-left: 30px; }
+ul:first-child, ol:first-child { margin-top: 0px; }
+ul:last-child, ol:last-child { margin-bottom: 0px; }
+blockquote { border-left: 4px solid rgb(223, 226, 229); padding: 0px 15px; color: rgb(119, 119, 119); }
+blockquote blockquote { padding-right: 0px; }
+table { padding: 0px; word-break: initial; }
+table tr { border-top: 1px solid rgb(223, 226, 229); margin: 0px; padding: 0px; }
+table tr:nth-child(2n), thead { background-color: rgb(248, 248, 248); }
+table tr th { font-weight: bold; border-width: 1px 1px 0px; border-top-style: solid; border-right-style: solid; border-left-style: solid; border-top-color: rgb(223, 226, 229); border-right-color: rgb(223, 226, 229); border-left-color: rgb(223, 226, 229); border-image: initial; border-bottom-style: initial; border-bottom-color: initial; margin: 0px; padding: 6px 13px; }
+table tr td { border: 1px solid rgb(223, 226, 229); margin: 0px; padding: 6px 13px; }
+table tr th:first-child, table tr td:first-child { margin-top: 0px; }
+table tr th:last-child, table tr td:last-child { margin-bottom: 0px; }
+.CodeMirror-lines { padding-left: 4px; }
+.code-tooltip { box-shadow: rgba(0, 28, 36, 0.3) 0px 1px 1px 0px; border-top: 1px solid rgb(238, 242, 242); }
+.md-fences, code, tt { border: 1px solid rgb(231, 234, 237); background-color: rgb(248, 248, 248); border-radius: 3px; padding: 2px 4px 0px; font-size: 0.9em; }
+code { background-color: rgb(243, 244, 244); padding: 0px 2px; }
+.md-fences { margin-bottom: 15px; margin-top: 15px; padding-top: 8px; padding-bottom: 6px; }
+.md-task-list-item > input { margin-left: -1.3em; }
+@media print {
+  html { font-size: 13px; }
+  table, pre { break-inside: avoid; }
+  pre { overflow-wrap: break-word; }
+}
+.md-fences { background-color: rgb(248, 248, 248); }
+#write pre.md-meta-block { padding: 1rem; font-size: 85%; line-height: 1.45; background-color: rgb(247, 247, 247); border: 0px; border-radius: 3px; color: rgb(119, 119, 119); margin-top: 0px !important; }
+.mathjax-block > .code-tooltip { bottom: 0.375rem; }
+.md-mathjax-midline { background: rgb(250, 250, 250); }
+#write > h3.md-focus::before { left: -1.5625rem; top: 0.375rem; }
+#write > h4.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+#write > h5.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+#write > h6.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+.md-image > .md-meta { border-radius: 3px; padding: 2px 0px 0px 4px; font-size: 0.9em; color: inherit; }
+.md-tag { color: rgb(167, 167, 167); opacity: 1; }
+.md-toc { margin-top: 20px; padding-bottom: 20px; }
+.sidebar-tabs { border-bottom: none; }
+#typora-quick-open { border: 1px solid rgb(221, 221, 221); background-color: rgb(248, 248, 248); }
+#typora-quick-open-item { background-color: rgb(250, 250, 250); border-color: rgb(254, 254, 254) rgb(229, 229, 229) rgb(229, 229, 229) rgb(238, 238, 238); border-style: solid; border-width: 1px; }
+.on-focus-mode blockquote { border-left-color: rgba(85, 85, 85, 0.12); }
+header, .context-menu, .megamenu-content, footer { font-family: "Segoe UI", Arial, sans-serif; }
+.file-node-content:hover .file-node-icon, .file-node-content:hover .file-node-open-state { visibility: visible; }
+.mac-seamless-mode #typora-sidebar { background-color: var(--side-bar-bg-color); }
+.md-lang { color: rgb(180, 101, 77); }
+.html-for-mac .context-menu { --item-hover-bg-color: #E6F0FE; }
+#md-notification .btn { border: 0px; }
+.dropdown-menu .divider { border-color: rgb(229, 229, 229); }
+.ty-preferences .window-content { background-color: rgb(250, 250, 250); }
+.ty-preferences .nav-group-item.active { color: white; background: rgb(153, 153, 153); }
+
+
+</style>
+</head>
+<body class='typora-export os-windows' onload="IFrameResize()">
+<div  id='write'  class = 'is-node'><h2><a name="mfc调用科大讯飞实现语音生成转写唤醒" class="md-header-anchor"></a><span>mfc调用科大讯飞实现语音生成转写唤醒</span></h2><p><span>要实现语音合成唤醒转写啥的，微软和谷歌也行，只是我和朋友两人选择了使用科大讯飞，体验还可以。  </span><!-- more --></p><p><span>3.1运行主画面</span>
+<span>1、系统一打开，出现酣睡的龙猫。</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/2019112109302294.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNTA2Nzg5,size_16,color_FFFFFF,t_70" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>2、语音唤醒：说出“小洛起床”或”小洛醒醒”（唤醒词），可唤醒程序，进入主界面。</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/2019112109303296.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNTA2Nzg5,size_16,color_FFFFFF,t_70" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>3、快捷键ctrl+E也可进入主界面。</span>
+<span>4、语音识别：</span>
+<span>（1）点击“麦克风录入”单选键，会进入“麦克风录入”模式（进入主界面时默认为“麦克风录入”模式）。</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/2019112109303812.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNTA2Nzg5,size_16,color_FFFFFF,t_70" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>点击“音频导入”单选键，会进入“音频导入”模式。</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/20191121093055458.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNTA2Nzg5,size_16,color_FFFFFF,t_70" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>（2）麦克风录入：</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/2019112109310717.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNTA2Nzg5,size_16,color_FFFFFF,t_70" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>1.开始录音：点击“开始录音”按钮，开始录音，同时“开始录音”按钮变为“停止录音”按钮。</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/20191121093120116.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNTA2Nzg5,size_16,color_FFFFFF,t_70" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>2.停止录音：a.开始说话后，说话声停止一段时间后，自动停止录音，同时文本框里出现识别结果。若文本框内之前已有内容，识别结果会加在之前的内容后。此时需要点击一次“停止录音”按钮，才能切换回“开始录音”按钮。</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/20191121093133408.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNTA2Nzg5,size_16,color_FFFFFF,t_70" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>b.开始说话后，点击“停止录音”按钮，按钮切换回“开始录音”按钮，同时停止录音，文本框里出现识别结果。若文本框内之前已有内容，识别结果会加在之前的内容后。</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/20191121093145835.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNTA2Nzg5,size_16,color_FFFFFF,t_70" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>（3）音频导入：</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/20191121093234473.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNTA2Nzg5,size_16,color_FFFFFF,t_70" referrerpolicy="no-referrer" alt="在这里插入图片描述"></p><p><span>点击“选择音频”按钮，会弹出选择文件的对话框。</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/2019112109325438.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNTA2Nzg5,size_16,color_FFFFFF,t_70" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>可以选择wav和pcm格式的文件。</span>
+<img src="https://img-blog.csdnimg.cn/20191121093343766.png" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>选择文件后，点击“打开”按钮，文本框里出现识别结果。若文本框内之前已有内容，会先清空文本框，显示识别结果。</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/20191121093400411.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNTA2Nzg5,size_16,color_FFFFFF,t_70" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>（4）保存：点击“保存”按钮，可以将当前文本框内的识别结果保存为txt格式。若保存成功，会弹出“保存成功”消息框。</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/2019112109341697.png" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>（5）选择语言：语言下拉框可以选择语言，共可以选择中文、英文、日文三种语言。为什么有这个呢，因为我其实还会日语，所以我就要出来骚一下</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/20191121093458747.png" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>5.语音合成：</span>
+<span>（1）输入文本：</span>
+<span>1.直接在文本框内输入文本。</span>
+<span>2.点击“打开文本”按钮，会弹出选择文件的对话框，可以选择txt格式的文件打开。</span>
+<span>（2）播放：</span>
+<span>1.点击“播放”按钮，播放文本转换成的音频，同时“播放”按钮变为无法使用，“暂停”“停止”“保存”按钮变为可以使用，右下角小喇叭开始播放声音的动态效果。</span>
+<span>2.点击“暂停”按钮，暂停播放文本转换成的音频，同时“暂停”按钮变为无法使用，“继续”按钮变为可以使用，右下角小喇叭停止播放声音的动态效果。</span>
+<span>3.点击“继续”按钮，继续播放文本转换成的音频，同时“继续”按钮变为无法使用，“暂停”按钮变为可以使用，右下角小喇叭开始播放声音的动态效果。</span>
+<span>4.点击“停止”按钮，停止播放文本转换成的音频，同时“暂停”“继续”“停止”“保存”按钮变为无法使用，“播放”按钮变为可以使用，右下角小喇叭停止播放声音的动态效果。</span>
+<span>5.若未点击“停止”按钮，音频播放完毕后，“暂停”“继续”按钮自动变为无法使用，右下角小喇叭停止播放声音的动态效果。之后需要点击一次“停止”按钮才能令“播放”按钮可以使用。</span>
+<span>（3）保存：在“保存”按钮可以用的状态下，点击“保存”按钮，可以将当前文本框内的识别结果保存为wav或pcm或mp3格式。若保存成功，会弹出“保存成功”消息框。</span>
+<span>（4）修改音频属性：</span>
+<span>1.性别下拉框可以选择性别。</span>
+<span>2.语速滑动条可以改变语速，语速范围为1~100。</span>
+<span>3.音量滑动条可以改变音量，音量范围为1~100。</span>
+<span>（注：语音唤醒、语音识别功能必须在在线的情况下才能使用，语音合成功能在线、离线都可以使用。）</span>
+<span>3.2设计结构</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/20191121093630809.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNTA2Nzg5,size_16,color_FFFFFF,t_70" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>3.3主要代码</span>
+<span>1、环境配置：</span>
+<span>1.将SDK中bin,include,libs文件夹复制到新建工程文件夹下。</span>
+<span>2.添加附加包含目录：将复制过来的include文件夹添加到附加包含目录。</span>
+<span>3.加载msc.lib文件：在文件中添加下述代码。</span></p><ol start='' ><li><span>#ifdef _WIN64  </span></li><li><span>#pragma comment(lib,&quot;../libs/msc_x64.lib&quot;)//x64  </span></li><li><span>#else  </span></li><li><span>#pragma comment(lib,&quot;../libs/msc.lib&quot;)//x86  </span></li><li><span>#endif</span><br/><span>4.将msc.dll所在目录设置为工作目录。</span>
+<span>注：换了电脑之后要修改的配置：修改附加包含目录include的路径，改成在新电脑上的路径。</span>
+<span>主要的函数都在科大讯飞的文档里，写的很明白，这里就不复制粘贴了，没啥意思。</span></li></ol><p><span>4、图形化界面：</span>
+<span>1.线程：</span>
+<span>（1）定义线程：</span></p><ol start='' ><li><span>DWORD WINAPI xiancheng2(LPVOID lpParameter)  </span></li><li><span>{  </span></li><li><span>...  </span></li><li><span>return 0;  </span></li><li><span>}</span><br/><span>（2）创建线程：</span></li><li><span>HANDLE hThread = CreateThread(NULL,0,xiancheng,NULL,0,NULL);</span><br/><span>（3）调用对话框数据：</span>
+<span>创建线程时将对话框作为参数传入线程：（this指对话框）</span></li><li><span>HANDLE hThread = CreateThread(NULL,0,xiancheng,this,0,NULL);</span><br/><span>线程中创建主对话框类的指针，并指向传入的主对话框参数：</span></li><li><span>DWORD WINAPI xianchengTTS(LPVOID lpParameter)  </span></li><li><span>{  </span></li><li><span>C人机交互mfcDlg </span><em><span>pThis = (C人机交互mfcDlg</span></em><span>)lpParameter;  </span></li><li><span>...  </span></li><li><span>return 0;  </span></li><li><span>} </span>
+<span>之后在线程中便可使用该指针调用主对话框的参数了：</span></li><li><span>pThis-&gt;x  </span></li></ol><p><span>2.CString转const char*：</span></p><ol start='' ><li><span>CString str=_T(&quot;CSDN&quot;);  </span></li><li><span>const char* cstr;  </span></li><li><span>char temp[100];  </span></li><li><span>::wsprintfA(temp, &quot;%ls&quot;,(LPCTSTR)str);  </span></li><li><span>cstr = temp;  </span></li></ol><p><span>3.Slider Control控件：</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/20191121093917163.png" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>1）初始化</span></p><ol start='' ><li><span>m_slidercA.SetRange(0,100);//设置范围  </span></li><li><span>m_slidercA.SetPos(50);//当前停留的位置</span><br/><span>（2）添加滑动消息：打开Slider Control控件的类向导，给对话框类添加WM_HSCROLL消息：</span></li><li><span>void CxxxView::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)  </span></li><li><span>{  </span></li><li><span>if ((&amp;m_slider) ==(CSliderCtrl *) pScrollBar)  </span></li><li><span>{  </span></li><li><span>//要实现的功能  </span></li><li><span>}  </span></li><li><span>CFormView::OnHScroll(nSBCode, nPos, pScrollBar);  </span></li><li><span>} </span></li></ol><p><span>4.快捷键：</span>
+<span>先添加Accelerator资源，修改键值，在对应键上添加事件处理程序。</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/20191121094136771.png" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>然后在对话框头文件中添加快捷键对象“HACCEL m_hAccel”,在对话框构造函数中加载：（IDR_ACCELERATOR1是快捷键表的ID）</span></p><ol start='' ><li><span>m_hAccel=::LoadAccelerators(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDR_ACCELERATOR1));</span><br/><span>最后重载“virtual BOOL PreTranslateMessage(MSG* pMsg)”函数，在重载函数中添加：</span></li><li><span>if(m_hAccel)  </span></li><li><span>if(::TranslateAccelerator(m_hWnd,m_hAccel,pMsg))    </span></li><li><span>return(TRUE);</span><br/><span>激活快捷键。</span></li></ol><p><span>5.插入gif:</span>
+<span>（1）下载PictureEx.h和PictureEx.cpp。</span>
+<span>（2）拷贝PictureEx.h和PictureEx.cpp到工程目录。</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/20191121094158767.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzQzNTA2Nzg5,size_16,color_FFFFFF,t_70" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>（3）将PictureEx.h和PictureEx.cpp导入到工程。</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/20191121094203965.png" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>（4）在XXXDlg.h中，引入PictureEx.h。</span></p><ol start='' ><li><span>#include &quot;PictureEx.h&quot;</span><br/><span>（5）在对话框中拖入一个picture control控件。</span>
+<span>（6）给picture control控件添加控件变量:m_pic 。</span>
+<span>（7）在XXXDlg.h中，找到刚添加的控件变量定义行，改为：</span></li><li><span>CPictureEx m_pic;</span><br/><span>（8）显示gif：</span></li><li><span>m_pic.Load(_T(&quot;D:</span><span>\</span><span>1.gif&quot;)); </span><br/><span>（9）</span>
+<span>a.让gif动起来：</span></li><li><span>m_pic.Draw();</span><br/><span>b.让gif停下来：</span></li><li><span>m_pic.Stop();  </span></li></ol><p><span>6.媒体设备控制接口mciSendCommand：</span>
+<span>（1）打开设备：</span></p><ol start='' ><li><span>MCI_OPEN_PARMS mciOpenParms;  </span></li><li><span>mciOpenParms.lpstrDeviceType=(LPCWSTR)(MCI_DEVTYPE_WAVEFORM_AUDIO);  </span></li><li><span>mciOpenParms.lpstrElementName=(LPCWSTR)Filename;//Filename为文件地址  </span></li><li><span>mciSendCommand(NULL,MCI_OPEN,MCI_OPEN_TYPE|MCI_OPEN_TYPE_ID|MCI_WAIT|MCI_OPEN_ELEMENT,(DWORD)(LPVOID)&amp;mciOpenParms);  </span></li></ol><p><span>（2）播放：MCI_PLAY</span></p><ol start='' ><li><span>DWORD m_nDeviceID;  </span></li><li><span>m_nDeviceID=mciOpenParms.wDeviceID;  </span></li><li><span>MCI_PLAY_PARMS mciPlayParms;  </span></li><li><span>mciPlayParms.dwFrom=0;  </span></li><li><span>mciSendCommand(m_nDeviceID,MCI_PLAY,MCI_FROM ,(DWORD)(LPVOID)&amp;mciPlayParms);  </span></li></ol><p><span>（3）暂停播放：MCI_PAUSE</span></p><ol start='' ><li><span>mciSendCommand(m_nDeviceID, MCI_PAUSE, 0,(DWORD)(LPVOID) &amp;mciPlayParms);  </span></li></ol><p><span>（4）继续播放：由于暂停时播放的指针并没有移回开头，所以直接重新播放就好。</span></p><ol start='' ><li><span>mciSendCommand(m_nDeviceID, MCI_PLAY, 0,(DWORD)(LPVOID)&amp;mciPlayParms);  </span></li></ol><p><span>（5）停止播放，关闭设备： MCI_CLOSE</span></p><ol start='' ><li><span>mciSendCommand(m_nDeviceID, MCI_CLOSE, NULL, NULL);  </span></li></ol><p><span>（6）获取媒体总时长和当前播放位置：MCI_STATUS_LENGTH 获得文件长度，MCI_STATUS_POSITION 获得文件播放的当前位置。返回信息存放于StatusParms.dwReturn中。</span></p><ol start='' ><li><span>MCI_STATUS_PARMS StatusParms;  </span></li><li><span>StatusParms.dwItem = MCI_STATUS_LENGTH;  </span></li><li><span>mciSendCommand (m_nDeviceID, MCI_STATUS, MCI_WAIT | MCI_STATUS_ITEM,(DWORD)(LPVOID) &amp;StatusParms);  </span></li><li><span>wavLength=StatusParms.dwReturn;  </span></li><li><span>StatusParms.dwItem = MCI_STATUS_POSITION;  </span></li><li><span>mciSendCommand (m_nDeviceID, MCI_STATUS, MCI_WAIT | MCI_STATUS_ITEM,(DWORD)(LPVOID) &amp;StatusParms);  </span></li><li><span>wavPosition=StatusParms.dwReturn;  </span></li></ol><p><span>7.麦克风录入，录制为pcm文件：</span></p><ol start='' ><li><span>HANDLE          wait;    </span></li><li><span>waveform.wFormatTag = WAVE_FORMAT_PCM;//声音格式为PCM    </span></li><li><span>waveform.nSamplesPerSec = 16000;//采样率，16000次/秒    </span></li><li><span>waveform.wBitsPerSample = 16;//采样比特，16bits/次    </span></li><li><span>waveform.nChannels = 1;//采样声道数，2声道    </span></li><li><span>waveform.nAvgBytesPerSec = 16000;//每秒的数据率，就是每秒能采集多少字节的数据    </span></li><li><span>waveform.nBlockAlign = 2;//一个块的大小，采样bit的字节数乘以声道数    </span></li><li><span>waveform.cbSize = 0;//一般为0    </span></li><li></li><li><span>wait = CreateEvent(NULL, 0, 0, NULL);    </span></li><li><span>//使用waveInOpen函数开启音频采集    </span></li><li><span>//建立两个数组（这里可以建立多个数组）用来缓冲音频数据    </span></li><li><span>DWORD bufsize = 1024*100;//每次开辟10k的缓存存储录音数据    </span></li><li><span>int i;    </span></li><li></li><li><span>while(isawake==false){  </span></li><li><span>i=2;  </span></li><li><span>fopen_s(&amp;pf, IVW_AUDIO_FILE_NAME, &quot;wb&quot;);  </span></li><li><span>waveInOpen(&amp;hWaveIn, WAVE_MAPPER, &amp;waveform,(DWORD_PTR)wait, 0L, CALLBACK_EVENT);  </span></li><li><span>while(i--)//录制2秒左右声音，结合音频解码和网络传输可以修改为实时录音播放的机制以实现对讲功能    </span></li><li><span>{    </span></li><li><span>pBuffer1 = new BYTE[bufsize];    </span></li><li><span>wHdr1.lpData = (LPSTR)pBuffer1;    </span></li><li><span>wHdr1.dwBufferLength = bufsize;    </span></li><li><span>wHdr1.dwBytesRecorded = 0;    </span></li><li><span>wHdr1.dwUser = 0;    </span></li><li><span>wHdr1.dwFlags = 0;    </span></li><li><span>wHdr1.dwLoops = 1;    </span></li><li><span>waveInPrepareHeader(hWaveIn, &amp;wHdr1, sizeof(WAVEHDR));//准备一个波形数据块头用于录音    </span></li><li><span>waveInAddBuffer(hWaveIn, &amp;wHdr1, sizeof (WAVEHDR));//指定波形数据块为录音输入缓存    </span></li><li><span>waveInStart(hWaveIn);//开始录音    </span></li><li><span>Sleep(1000);//等待声音录制1s    </span></li><li><span>waveInReset(hWaveIn);//停止录音    </span></li><li><span>fwrite(pBuffer1, 1, wHdr1.dwBytesRecorded, pf);    </span></li><li><span>delete pBuffer1;  </span></li><li><span>}    </span></li><li><span>fclose(pf);    </span></li><li><span>waveInClose(hWaveIn);  </span></li><li><span>}  </span></li></ol><p><span>8.通过麦克风采集音频数据（不产生音频文件）：sr_write_audio_data()函数。函数源代码见下方：</span></p><ol start='' ><li><span>int sr_write_audio_data(struct speech_rec *sr, char *data, unsigned int len)  </span></li><li><span>{  </span></li><li><span>const char *rslt = NULL;  </span></li><li><span>int ret = 0;  </span></li><li><span>if (!sr )  </span></li><li><span>return -E_SR_INVAL;  </span></li><li><span>if (!data || !len)  </span></li><li><span>return 0;  </span></li><li></li><li><span>ret = QISRAudioWrite(sr-&gt;session_id, data, len, sr-&gt;audio_status, &amp;sr-&gt;ep_stat, &amp;sr-&gt;rec_stat);  </span></li><li><span>if (ret) {  </span></li><li><span>end_sr_on_error(sr, ret);  </span></li><li><span>return ret;  </span></li><li><span>}  </span></li><li><span>sr-&gt;audio_status = MSP_AUDIO_SAMPLE_CONTINUE;  </span></li><li></li><li><span>if (MSP_REC_STATUS_SUCCESS == sr-&gt;rec_stat) { //已经有部分听写结果  </span></li><li><span>rslt = QISRGetResult(sr-&gt;session_id, &amp;sr-&gt;rec_stat, 0, &amp;ret);  </span></li><li><span>if (MSP_SUCCESS != ret) {  </span></li><li><span>sr_dbg(&quot;\nQISRGetResult failed! error code: %d\n&quot;, ret);  </span></li><li><span>end_sr_on_error(sr, ret);  </span></li><li><span>return ret;  </span></li><li><span>}  </span></li><li><span>if (NULL != rslt &amp;&amp; sr-&gt;notif.on_result)  </span></li><li><span>sr-&gt;notif.on_result(rslt, sr-&gt;rec_stat == MSP_REC_STATUS_COMPLETE ? 1 : 0);  </span></li><li><span>}  </span></li><li></li><li><span>if (MSP_EP_AFTER_SPEECH == sr-&gt;ep_stat)  </span></li><li><span>end_sr_on_vad(sr);  </span></li><li></li><li><span>return 0;  </span></li><li><span>} </span></li></ol><p><span>四、分析总结</span>
+<span>（一）缺陷</span>
+<span>1.语音唤醒：要先将录到的音频转为pcm文件，再对文件进行识别。音频文件是循环采集的，大概每3秒录一次，要是刚好卡在切换循环的时候说就无法识别到。</span>
+<span>2.语音唤醒和语音识别必须连网。</span>
+<span>3.语音合成只能合成中英文。（日文其实也是可以念的，就是只能一个一个假名念。）</span>
+<span>4.语音识别的麦克风录入，就算是说话停止后自动录入停止，显示识别结果，也一定要点“停止录音”按钮才能进行其它操作。因为“停止录音”按钮里有退出科大讯飞的登录，如果不退出，接下来进行别的操作时会重新登录，从而产生登录冲突。</span>
+<span>5.语音合成，点击了“停止”按钮之后就无法点“保存”按钮。因为保存是利用mciSendCommand的函数，保存之前mciSendCommand打开的设备的数据，然而“停止”按钮里有关闭mciSendCommand打开的设备，所以点击了“停止”按钮之后要保存的对象也会关闭，因此干脆设为了点击了“停止”按钮之后就无法点“保存”按钮。</span>
+<span>6.实时语音识别的用户词表由于版本问题不能上传，就没做命令词识别。</span>
+<span>7.语音合成不是合成数据后直接播放，而是合成数据后先写入一个wav文件，再播放这个wav文件。</span></p><p><span>（二）主要问题</span>
+<span>1.输入的音频格式要统一，有的时候要用到wav有的时候要用到pcm。不知道应该要什么格式，就利用au转格式，尝试了很多次。在唤醒的时候对pcm的要求非常严格（各种属性限死了），否则就是什么也识别不出来。</span>
+<span>2.唤醒的时候因为使用的是录成pcm再识别的方式，所以需要重复唤醒，就出现了错误为10132的错误，查了科大讯飞的东西，指的是上一次会话还没有结束，因为每次的识别也需要时间，下一次识别的时候没关闭，就无法再次登陆。因此每次录完之后还会sleep一段时间。</span>
+<span>3.录入pcm的时候出现过第二次录入就录不进去的情况，那是因为录入pcm的函数waveInOpen(&amp;hWaveIn, WAVE_MAPPER, &amp;waveform,(DWORD_PTR)wait, 0L, CALLBACK_EVENT)函数没有每次循环都调用。</span>
+<span>4.麦克风录入的语音识别，每隔一段时间翻译一次，比打开音频文件翻译要准确，但是说话时不能离话筒太近，气声会影响翻译效果，声音的大小也有规定。</span></p><ol start='5' ><li><span>.c和.cpp之间有些巧妙的区别，官方的代码是.c文件，有些地方要改成.cpp才能运行。</span>
+<span>6.VS项目中，若同时有.c和.cpp文件，编译器会对它们采用不同的编译方式（主要因为函数声明的处理方式不同，C语言没有多态，函数名编译后比较正常，而C++有多态的特性，所以编译之后函数名面目全非）。需要把.c文件的预编译头去掉。</span>
+<span>7.在mfc里，因为要重复地读取录的数据，所以很多地方要用到循环，必须要新开一个线程，否则就会卡死。</span>
+<span>8.在进行实时识别的时候，出现报错10111的情况，就是sr_start_listening函数调用失败，去官网查询后是：未调用MSPLogin接口。可是在最开始点击按钮的时候就已经调用了，并经过调试发现调用成功了。所以在无数次的尝试之后发现，这玩意，经过了一个线程就没用了，于是就在后面sr_start_listening调用之前又登陆了一次，最终尝试成功。</span>
+<span>9.播放wav文件，原本用的是PlaySound()函数。利用“PlaySound(TEXT(&quot;Data</span><span>\</span><span>1.wav&quot;), NULL, SND_FILENAME | SND_ASYNC | SND_LOOP);”播放音频，利用“PlaySound(NULL,NULL,NULL);”停止播放。但是PlaySound()停止之后就无法从停止的地方开始继续播放，于是之后改为了用mciSendCommand。</span>
+<span>10.语音合成的参数第一次用“CString str=L&quot;engine_type = local, voice_name = &quot;+sexType+L&quot;, text_encoding = GB2312, tts_res_path = fo|res</span><span>\</span><span>tts</span><span>\</span><span>=&quot;+sexType+L&quot;.jet;fo|res</span><span>\</span><span>tts</span><span>\</span><span>common.jet, sample_rate = 16000, speed = &quot;+speedStr+L&quot;, volume = &quot;+volumeStr+L&quot;, pitch = 50, rdn = 0&quot;;”一直出错，查看官方文件后，错误原因为指定文件打不开。后来重写了一次，“CString str=L&quot;engine_type = local, voice_name = &quot;+sexType+L&quot;, text_encoding = GB2312, tts_res_path = fo|res</span><span>\</span><span>tts</span><span>\</span><span>&quot;+sexType+L&quot;.jet;fo|res</span><span>\</span><span>tts</span><span>\</span><span>common.jet, sample_rate = 16000, speed = &quot;+speedStr+L&quot;, volume = &quot;+volumeStr+L&quot;, pitch = 50, rdn = 0&quot;;”，就可以了。但是实在是不知道有什么区别，可能是空格中英文的问题。</span>
+<span>11.语音识别的麦克风录入，若为声音停下，自动停止录音的情况，会调用show_result(char *string, char is_over)两次，一次is_over=0，一次is_over=1；若为点击“停止录音”按钮的情况，会调用show_result(char *string, char is_over)一次，is_over=1。所以为了防止由于”show_result(char *string, char is_over)”调用两次导致文本框内识别文本出现两次的情况，令当is_over=1时更新文本。</span>
+<span>12.播放wav时，为了判断何时播放结束，开了一个线程：</span></li><li><span>DWORD WINAPI xianchengTTS(LPVOID lpParameter)  </span></li><li><span>{  </span></li><li><span>C人机交互mfcDlg </span><em><span>pThis = (C人机交互mfcDlg</span></em><span>)lpParameter;  </span></li><li><span>while(true)  </span></li><li><span>{  </span></li><li><span>(pThis-&gt;StatusParms).dwItem=MCI_STATUS_POSITION;  </span></li><li><span>mciSendCommand (pThis-&gt;m_nDeviceID, MCI_STATUS, MCI_WAIT | MCI_STATUS_ITEM,(DWORD)(LPVOID) &amp;(pThis-&gt;StatusParms));  </span></li><li><span>if((pThis-&gt;StatusParms).dwReturn==pThis-&gt;wavLength)  </span></li><li><span>break;  </span></li><li><span>}  </span></li><li><span>...  </span></li><li><span>return 0;  </span></li><li><span>}</span><br/><span>断点调试了一下，(pThis-&gt;StatusParms).dwReturn的值一直不变，但是明明每次在线程里都更新了pThis-&gt;StatusParms的值。于是觉得是因为通过“HANDLE hThread = CreateThread(NULL,0,xianchengTTS,this,0,NULL);”创建线程时，传进去的是那一瞬间的主对话框状态，线程里调用的主对话框信息无法实时更新，所以(pThis-&gt;StatusParms).dwReturn变不了。</span>
+<span>原本是想利用</span></li><li><span>StatusParms.dwItem = MCI_STATUS_POSITION;  </span></li><li><span>mciSendCommand (m_nDeviceID, MCI_STATUS, MCI_WAIT | MCI_STATUS_ITEM,(DWORD)(LPVOID) &amp;StatusParms);</span><br/><span>获取当前音频播放到的时间，然后和音频总时间进行对比。于是无法使用这个方法了。之后采用了很骚的方法——手工算时间：</span></li><li><span>DWORD WINAPI xianchengTTS(LPVOID lpParameter)  </span></li><li><span>{  </span></li><li><span>C人机交互mfcDlg </span><em><span>pThis = (C人机交互mfcDlg</span></em><span>)lpParameter;  </span></li><li><span>double i=pThis-&gt;wavPosition;  </span></li><li><span>while(pThis-&gt;flagPlay)  </span></li><li><span>{  </span></li><li><span>if(i&gt;=pThis-&gt;wavLength)  </span></li><li><span>break;  </span></li><li><span>i+=0.0000032;  </span></li><li><span>}  </span></li><li><span>...  </span></li><li><span>return 0;  </span></li><li><span>}</span>
+<span>但是后来在对话框类里定了一个布尔值，线程里调用对话框的这个布尔值是可以实时更新的，就很奇怪。</span>
+<span>顺便一提，上面那个获取音频位置的方法，在对话框函数里是正确的。</span></li></ol><p><span>（三）感想</span>
+<span>一开始听到要做语音时，还以为是要让我们自己写语音识别、语音合成的代码，被震惊了。后来知道原来是可以调用已有的sdk的。</span>
+<span>这次实验主要调用了科大讯飞的sdk，虽然科大讯飞给了demo，但自己实际使用那些函数时也没有那么简单，还是花费了很多时间研究的。不过当看到最终效果时，还是好有成就感的。</span>
+<span>最后碎碎念一句，科大讯飞的语音合成有一个参数</span>
+<span> </span><img src="https://img-blog.csdnimg.cn/20191121094250167.png" referrerpolicy="no-referrer" alt="在这里插入图片描述">
+<span>一看就很有中国感，不愧是中国的公司开发的。</span></p><p><span>github文件：</span><a href='https://github.com/vandarkfan/speech-recognition-dictation' target='_blank' class='url'>https://github.com/vandarkfan/speech-recognition-dictation</a></p></div>
+</body>
+<script>
+    function IFrameResize(){
+//alert(this.document.body.scrollHeight); //弹出当前页面的高度
+        var obj = parent.document.getElementById("childFrame"); //取得父页面IFrame对象
+//alert(obj.height); //弹出父页面中IFrame中设置的高度
+        obj.height = this.document.body.scrollHeight; //调整父页面中IFrame的高度为此页面的高度
+    }
+</script>
+</html>

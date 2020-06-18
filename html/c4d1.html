@@ -1,0 +1,239 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>c4d部分练习(一)</title><link href='https://fonts.loli.net/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css' /><style type='text/css'>html {overflow-x: initial !important;}:root { --bg-color:#ffffff; --text-color:#333333; --select-text-bg-color:#B5D6FC; --select-text-font-color:auto; --monospace:"Lucida Console",Consolas,"Courier",monospace; }
+html { font-size: 14px; background-color: var(--bg-color); color: var(--text-color); font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-size: 1rem; line-height: 1.42857; overflow-x: hidden; background: inherit; tab-size: 4; }
+iframe { margin: auto; }
+a.url { word-break: break-all; }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: var(--select-text-bg-color); color: var(--select-text-font-color); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; overflow-wrap: break-word; position: relative; white-space: normal; overflow-x: visible; padding-top: 40px; }
+#write.first-line-indent p { text-indent: 2em; }
+#write.first-line-indent li p, #write.first-line-indent p * { text-indent: 0px; }
+#write.first-line-indent li { margin-left: 2em; }
+.for-image #write { padding-left: 8px; padding-right: 8px; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export .footnote-line, .typora-export li, .typora-export p { white-space: pre-wrap; }
+@media screen and (max-width: 500px) {
+  body.typora-export { padding-left: 0px; padding-right: 0px; }
+  #write { padding-left: 20px; padding-right: 20px; }
+  .CodeMirror-sizer { margin-left: 0px !important; }
+  .CodeMirror-gutters { display: none !important; }
+}
+#write li > figure:last-child { margin-bottom: 0.5rem; }
+#write ol, #write ul { position: relative; }
+img { max-width: 100%; vertical-align: middle; }
+button, input, select, textarea { color: inherit; font: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+*, ::after, ::before { box-sizing: border-box; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p, #write pre { width: inherit; }
+#write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write p { position: relative; }
+p { line-height: inherit; }
+h1, h2, h3, h4, h5, h6 { break-after: avoid-page; break-inside: avoid; orphans: 2; }
+p { orphans: 4; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.8rem; }
+h3 { font-size: 1.6rem; }
+h4 { font-size: 1.4rem; }
+h5 { font-size: 1.2rem; }
+h6 { font-size: 1rem; }
+.md-math-block, .md-rawblock, h1, h2, h3, h4, h5, h6, p { margin-top: 1rem; margin-bottom: 1rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: 700; font-style: italic; }
+a { cursor: pointer; }
+sup.md-footnote { padding: 2px 4px; background-color: rgba(238, 238, 238, 0.7); color: rgb(85, 85, 85); border-radius: 4px; cursor: pointer; }
+sup.md-footnote a, sup.md-footnote a:hover { color: inherit; text-transform: inherit; text-decoration: inherit; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; }
+figure { overflow-x: auto; margin: 1.2em 0px; max-width: calc(100% + 16px); padding: 0px; }
+figure > table { margin: 0px !important; }
+tr { break-inside: avoid; break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; break-inside: auto; text-align: left; }
+table.md-table td { min-width: 32px; }
+.CodeMirror-gutters { border-right: 0px; background-color: inherit; }
+.CodeMirror-linenumber { user-select: none; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+#write pre { white-space: pre-wrap; }
+#write.fences-no-line-wrapping pre { white-space: pre; }
+#write pre.ty-contain-cm { white-space: normal; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences { font-size: 0.9rem; display: block; break-inside: avoid; text-align: left; overflow: visible; white-space: pre; background: inherit; position: relative !important; }
+.md-diagram-panel { width: 100%; margin-top: 10px; text-align: center; padding-top: 0px; padding-bottom: 8px; overflow-x: auto; }
+#write .md-fences.mock-cm { white-space: pre-wrap; }
+.md-fences.md-fences-with-lineno { padding-left: 0px; }
+#write.fences-no-line-wrapping .md-fences.mock-cm { white-space: pre; overflow-x: auto; }
+.md-fences.mock-cm.md-fences-with-lineno { padding-left: 8px; }
+.CodeMirror-line, twitterwidget { break-inside: avoid; }
+.footnotes { opacity: 0.8; font-size: 0.9rem; margin-top: 1em; margin-bottom: 1em; }
+.footnotes + .footnotes { margin-top: 0px; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; background: 0px 0px; text-decoration: none; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: 400; text-align: left; box-sizing: content-box; direction: ltr; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li .mathjax-block, li p { margin: 0.5rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child, li > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; white-space: normal; }
+#write .footnote-line { white-space: pre-wrap; }
+@media print {
+  body, html { border: 1px solid transparent; height: 99%; break-after: avoid; break-before: avoid; }
+  #write { margin-top: 0px; padding-top: 0px; border-color: transparent !important; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  html.blink-to-pdf { font-size: 13px; }
+  .typora-export #write { padding-left: 32px; padding-right: 32px; padding-bottom: 0px; break-after: avoid; }
+  .typora-export #write::after { height: 0px; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+pre.md-meta-block { font-size: 0.8rem; min-height: 0.8rem; white-space: pre-wrap; background: rgb(204, 204, 204); display: block; overflow-x: hidden; }
+p > .md-image:only-child:not(.md-img-error) img, p > img:only-child { display: block; margin: auto; }
+p > .md-image:only-child { display: inline-block; width: 100%; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.md-math-block { width: 100%; }
+.md-math-block:not(:empty)::after { display: none; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus { outline: 0px; box-shadow: none; }
+.md-task-list-item { position: relative; list-style-type: none; }
+.task-list-item.md-task-list-item { padding-left: 0px; }
+.md-task-list-item > input { position: absolute; top: 0px; left: 0px; margin-left: -1.2em; margin-top: calc(1em - 10px); border: none; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc-content::after, .md-toc::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); }
+.md-toc-item a { text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: 700; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+@media screen and (max-width: 48em) {
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h6 .md-toc-inner { margin-left: 8em; }
+}
+a.md-toc-inner { font-size: inherit; font-style: inherit; font-weight: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+code, pre, samp, tt { font-family: var(--monospace); }
+kbd { margin: 0px 0.1em; padding: 0.1em 0.6em; font-size: 0.8em; color: rgb(36, 39, 41); background: rgb(255, 255, 255); border: 1px solid rgb(173, 179, 185); border-radius: 3px; box-shadow: rgba(12, 13, 14, 0.2) 0px 1px 0px, rgb(255, 255, 255) 0px 0px 0px 2px inset; white-space: nowrap; vertical-align: middle; }
+.md-comment { color: rgb(162, 127, 3); opacity: 0.8; font-family: var(--monospace); }
+code { text-align: left; vertical-align: initial; }
+a.md-print-anchor { white-space: pre !important; border-width: initial !important; border-style: none !important; border-color: initial !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: 0px !important; background: 0px 0px !important; text-decoration: initial !important; text-shadow: initial !important; }
+.md-inline-math .MathJax_SVG .noError { display: none !important; }
+.html-for-mac .inline-math-svg .MathJax_SVG { vertical-align: 0.2px; }
+.md-math-block .MathJax_SVG_Display { text-align: center; margin: 0px; position: relative; text-indent: 0px; max-width: none; max-height: none; min-height: 0px; min-width: 100%; width: auto; overflow-y: hidden; display: block !important; }
+.MathJax_SVG_Display, .md-inline-math .MathJax_SVG_Display { width: auto; margin: inherit; display: inline-block !important; }
+.MathJax_SVG .MJX-monospace { font-family: var(--monospace); }
+.MathJax_SVG .MJX-sans-serif { font-family: sans-serif; }
+.MathJax_SVG { display: inline; font-style: normal; font-weight: 400; line-height: normal; zoom: 90%; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; overflow-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px; }
+.MathJax_SVG * { transition: none 0s ease 0s; }
+.MathJax_SVG_Display svg { vertical-align: middle !important; margin-bottom: 0px !important; margin-top: 0px !important; }
+.os-windows.monocolor-emoji .md-emoji { font-family: "Segoe UI Symbol", sans-serif; }
+.md-diagram-panel > svg { max-width: 100%; }
+[lang="mermaid"] svg, [lang="flow"] svg { max-width: 100%; height: auto; }
+[lang="mermaid"] .node text { font-size: 1rem; }
+table tr th { border-bottom: 0px; }
+video { max-width: 100%; display: block; margin: 0px auto; }
+iframe { max-width: 100%; width: 100%; border: none; }
+.highlight td, .highlight tr { border: 0px; }
+svg[id^="mermaidChart"] { line-height: 1em; }
+
+
+:root { --side-bar-bg-color: #fafafa; --control-text-color: #777; }
+html { font-size: 16px; }
+body { font-family: "Open Sans", "Clear Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; color: rgb(51, 51, 51); line-height: 1.6; }
+#write { max-width: 860px; margin: 0px auto; padding: 30px 30px 100px; }
+#write > ul:first-child, #write > ol:first-child { margin-top: 30px; }
+a { color: rgb(65, 131, 196); }
+h1, h2, h3, h4, h5, h6 { position: relative; margin-top: 1rem; margin-bottom: 1rem; font-weight: bold; line-height: 1.4; cursor: text; }
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor { text-decoration: none; }
+h1 tt, h1 code { font-size: inherit; }
+h2 tt, h2 code { font-size: inherit; }
+h3 tt, h3 code { font-size: inherit; }
+h4 tt, h4 code { font-size: inherit; }
+h5 tt, h5 code { font-size: inherit; }
+h6 tt, h6 code { font-size: inherit; }
+h1 { padding-bottom: 0.3em; font-size: 2.25em; line-height: 1.2; border-bottom: 1px solid rgb(238, 238, 238); }
+h2 { padding-bottom: 0.3em; font-size: 1.75em; line-height: 1.225; border-bottom: 1px solid rgb(238, 238, 238); }
+h3 { font-size: 1.5em; line-height: 1.43; }
+h4 { font-size: 1.25em; }
+h5 { font-size: 1em; }
+h6 { font-size: 1em; color: rgb(119, 119, 119); }
+p, blockquote, ul, ol, dl, table { margin: 0.8em 0px; }
+li > ol, li > ul { margin: 0px; }
+hr { height: 2px; padding: 0px; margin: 16px 0px; background-color: rgb(231, 231, 231); border: 0px none; overflow: hidden; box-sizing: content-box; }
+li p.first { display: inline-block; }
+ul, ol { padding-left: 30px; }
+ul:first-child, ol:first-child { margin-top: 0px; }
+ul:last-child, ol:last-child { margin-bottom: 0px; }
+blockquote { border-left: 4px solid rgb(223, 226, 229); padding: 0px 15px; color: rgb(119, 119, 119); }
+blockquote blockquote { padding-right: 0px; }
+table { padding: 0px; word-break: initial; }
+table tr { border-top: 1px solid rgb(223, 226, 229); margin: 0px; padding: 0px; }
+table tr:nth-child(2n), thead { background-color: rgb(248, 248, 248); }
+table tr th { font-weight: bold; border-width: 1px 1px 0px; border-top-style: solid; border-right-style: solid; border-left-style: solid; border-top-color: rgb(223, 226, 229); border-right-color: rgb(223, 226, 229); border-left-color: rgb(223, 226, 229); border-image: initial; border-bottom-style: initial; border-bottom-color: initial; margin: 0px; padding: 6px 13px; }
+table tr td { border: 1px solid rgb(223, 226, 229); margin: 0px; padding: 6px 13px; }
+table tr th:first-child, table tr td:first-child { margin-top: 0px; }
+table tr th:last-child, table tr td:last-child { margin-bottom: 0px; }
+.CodeMirror-lines { padding-left: 4px; }
+.code-tooltip { box-shadow: rgba(0, 28, 36, 0.3) 0px 1px 1px 0px; border-top: 1px solid rgb(238, 242, 242); }
+.md-fences, code, tt { border: 1px solid rgb(231, 234, 237); background-color: rgb(248, 248, 248); border-radius: 3px; padding: 2px 4px 0px; font-size: 0.9em; }
+code { background-color: rgb(243, 244, 244); padding: 0px 2px; }
+.md-fences { margin-bottom: 15px; margin-top: 15px; padding-top: 8px; padding-bottom: 6px; }
+.md-task-list-item > input { margin-left: -1.3em; }
+@media print {
+  html { font-size: 13px; }
+  table, pre { break-inside: avoid; }
+  pre { overflow-wrap: break-word; }
+}
+.md-fences { background-color: rgb(248, 248, 248); }
+#write pre.md-meta-block { padding: 1rem; font-size: 85%; line-height: 1.45; background-color: rgb(247, 247, 247); border: 0px; border-radius: 3px; color: rgb(119, 119, 119); margin-top: 0px !important; }
+.mathjax-block > .code-tooltip { bottom: 0.375rem; }
+.md-mathjax-midline { background: rgb(250, 250, 250); }
+#write > h3.md-focus::before { left: -1.5625rem; top: 0.375rem; }
+#write > h4.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+#write > h5.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+#write > h6.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+.md-image > .md-meta { border-radius: 3px; padding: 2px 0px 0px 4px; font-size: 0.9em; color: inherit; }
+.md-tag { color: rgb(167, 167, 167); opacity: 1; }
+.md-toc { margin-top: 20px; padding-bottom: 20px; }
+.sidebar-tabs { border-bottom: none; }
+#typora-quick-open { border: 1px solid rgb(221, 221, 221); background-color: rgb(248, 248, 248); }
+#typora-quick-open-item { background-color: rgb(250, 250, 250); border-color: rgb(254, 254, 254) rgb(229, 229, 229) rgb(229, 229, 229) rgb(238, 238, 238); border-style: solid; border-width: 1px; }
+.on-focus-mode blockquote { border-left-color: rgba(85, 85, 85, 0.12); }
+header, .context-menu, .megamenu-content, footer { font-family: "Segoe UI", Arial, sans-serif; }
+.file-node-content:hover .file-node-icon, .file-node-content:hover .file-node-open-state { visibility: visible; }
+.mac-seamless-mode #typora-sidebar { background-color: var(--side-bar-bg-color); }
+.md-lang { color: rgb(180, 101, 77); }
+.html-for-mac .context-menu { --item-hover-bg-color: #E6F0FE; }
+#md-notification .btn { border: 0px; }
+.dropdown-menu .divider { border-color: rgb(229, 229, 229); }
+.ty-preferences .window-content { background-color: rgb(250, 250, 250); }
+.ty-preferences .nav-group-item.active { color: white; background: rgb(153, 153, 153); }
+
+
+</style>
+</head>
+<body class='typora-export os-windows' onload="IFrameResize()">
+<div  id='write'  class = 'is-node'><h1><a name="一c4d变形器部分开张" class="md-header-anchor"></a><span>一.c4d变形器部分开张</span></h1><p><span>c4d的学习的一部分，包括融球，对称，扭曲，斜切，锥化，螺旋，FFD，网格，挤压和伸展，溶解和一些练习</span></p><!--more--><h2><a name="1融球" class="md-header-anchor"></a><span>1.融球</span></h2><p><span>c4d的融球就是把多个物体融为一个</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200206172538.png" referrerpolicy="no-referrer"></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200206172549.png" referrerpolicy="no-referrer"></p><p><span>指数衰减就是按照距离衰减，基本上都是要勾上的，也可以在融球下的物体上添加融球标签具体调节每个物体的强度半径。编辑器细分就是面的数量，柔滑不柔滑，外壳数值就是在原本基础上放大或者缩小原物体</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200206155658.png" referrerpolicy="no-referrer"></p><p><span>现在的融球被xp粒子的一个“皮”的功能代替了，在皮中加上这两个物体就能完成类似的操作而且速度非常快</span></p><h2><a name="2对称" class="md-header-anchor"></a><span>2.对称</span></h2><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200206160407.png" referrerpolicy="no-referrer"></p><p><span>焊接点，工差就是在靠近对称面上的那些点焊接成一个，工差当然就是离多远判定成一个了。在轴心上限制点，就是说在zy平面上的点（我这里镜像平面是zy），想移动这些点只能在这个面上，x方向的移动你点不动的，就是一种保护机制。删除轴心上的多边形，这其实是有利于制造空心，这个选了在zy平面上就没有面了。自动翻转其实是个很方便的工具，比如你在做一个模型，在左边看看模型，选中了一个点，跑到右边看看，自动地选择了刚才你在左边看的点的对称点。</span></p><h2><a name="3扭曲" class="md-header-anchor"></a><span>3.扭曲</span></h2><p><span>扭曲效果器看上去很简单但是要用好还是有点说法的。</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207203558.png" referrerpolicy="no-referrer"></p><p><span>扭曲器首先是变形器，所以他也是放在父级以下的。强度自不用讲，就是扭曲强度。角度是只有某个方向的角度，这个要注意，比如一开始加扭曲，这个扭曲是y轴为中心的，只调强度是在xy平面内摆来摆去，要调整中心轴的话是在扭曲的坐标里调旋转，不调的话实际上他的摆来摆去真的只有一个方向</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207203935.png" referrerpolicy="no-referrer"></p><p><span>角度，角度其实是上图的那个黄色的线，其实是绕着y轴旋转。</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207204955.png" referrerpolicy="no-referrer"></p><p><span>就是这么回事。</span></p><p><span>保持纵轴长度就是如他所说，这个扭曲会让长度变化的，打开就不变化了，比配到父级就是完全匹配父级大小，就像上图，扭曲大小整的挺好其实就是先匹配父级然后再调大小。</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207205248.png" referrerpolicy="no-referrer"></p><p><span>限制就比如说在扭曲框里面的扭曲，外面的不扭曲但是旋转跟着来。</span></p><p><span>框内就是不跟着动</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207205437.png" referrerpolicy="no-referrer"></p><p><span>无限自然是与限制相似但不同，就是就算在框外也跟着扭曲。</span></p><p><span>衰减模块也非常的有用，但是衰减主要是和运动图形配合，等那时候再说使用方法。</span></p><h3><a name="扭曲示例" class="md-header-anchor"></a><span>扭曲示例</span></h3><p><span>这里我们要让一个不规则的面，沿着它的边沿扭曲，其实这个可以用来做纸张从中间撕开的效果</span></p><p><span>先做一个样条围成的面，样条然后加加挤压</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207222352.png" referrerpolicy="no-referrer"></p><p><span>这时候做出的面的边缘的点很不平衡，很少。在样条里改动，这个方法适用于挤压时让文字的模型变得很整齐。</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207222451.png" referrerpolicy="no-referrer"></p><p><span>点差值改统一，数量改大，这时边缘的点就会比较均衡，在做曲线的时候还是蛮重要的</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207222549.png" referrerpolicy="no-referrer"></p><p><strong><span>注意如果是搞面的扭曲的话注意是扭曲的尺寸z轴要很小，但是要有，必须是z轴，其他的绝对不行，这个东西自己尝试下，否则你不会知道这个扭曲会往哪个方向跑，多玩一玩</span></strong><span>，不服气的话可以试试别的方法，因为我试了之后发现这东西不是扭曲了简直是折叠。</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207230619.png" referrerpolicy="no-referrer"></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207225656.png" referrerpolicy="no-referrer"></p><p><span>我在做面的扭曲的时候会着重看绿色的箭头，我选中的是最旁边的那个扭曲，绿色的箭头要在摆动的中心线上。（下图是最后做完的结果，这里就是提前说下我的技巧）</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207233316.png" referrerpolicy="no-referrer"></p><p><span>样条复制一份，给当前状态转对象，就会出现一个超多点的样条，闭合样条也取消。然后把这个样条删一部分点就留一部分</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207230213.png" referrerpolicy="no-referrer"></p><p><span>预备工作，让这个面可以扭曲，如果你是新手想调到这大概你要调很久的旋转角度</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207230246.png" referrerpolicy="no-referrer"></p><p><span>然后加克隆，对象模式，对象当然是截过的样条，把上图的那个扭曲复制到克隆下，在克隆的变换里改旋转之类的，再改数量，同时改扭曲的大小，变成这么个效果。</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207231404.png" referrerpolicy="no-referrer"></p><p><span>但是现在的克隆的扭曲不控制这个面了。怎么把这么些个扭曲从克隆中整出来变成单独的呢。下面是一个很神奇的操作。</span></p><p><span>克隆对象勾选渲染实例</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207232118.png" referrerpolicy="no-referrer"></p><p><span>然后看着那个克隆的数量，有21个，你就给那个扭曲复制20个放克隆下面，就是总数比他少一个，给他c了，然后你就发现新出来的组里面有一堆的扭曲，把多的删除，然后把那21个放到挤压下面（小知识，鼠标中键可以选取父级以下所有对象）</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207232353.png" referrerpolicy="no-referrer"></p><p><span>结果：</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207232418.png" referrerpolicy="no-referrer"></p><p><span>其实这个效果是做比如纸张撕开或者皱起的感觉。</span></p><h2><a name="4斜切" class="md-header-anchor"></a><span>4.斜切</span></h2><p><span>斜切其实和扭曲有点像，这个东西的应用和扭曲分不开，看似憨憨实则不憨。</span></p><p><span>斜切和扭曲感觉有点像，绿色的箭头还是要在中心轴，这个是x轴的大小要小，强度的大小和红色箭头有关。可以做布铺开的感觉。</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207235737.png" referrerpolicy="no-referrer"></p><p><span>这个也是和扭曲一起的</span></p><p><span>先整个面，加扭曲能让他变成个卷，但是这个卷是圆的。</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200207235845.png" referrerpolicy="no-referrer"></p><p><span>然后加个斜切，注意斜切的红色和绿色的箭头。否则你可能遇到别的东西方向就乱了</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200208000010.png" referrerpolicy="no-referrer"></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200208000108.png" referrerpolicy="no-referrer"></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200208000209.png" referrerpolicy="no-referrer"></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200208000229.png" referrerpolicy="no-referrer"></p><p><span>最后通过改变扭曲的位置实现伸展布。我的理解是斜切会让某个东西向某个方向走，还是很直的那种感觉。这个布就是向上很直的方向，所以每个点都加了这个趋势，就像里收缩了。</span></p><h2><a name="5锥化螺旋" class="md-header-anchor"></a><span>5.锥化，螺旋</span></h2><p><span>锥化可以直接用来建模，让某个部分尖起来的那个感觉。如果强度调100的话，再调整位置，可以让模型从无到有，出场动画。加上延迟效果器，对点起效果，弹簧模式，可以搞动感的出场。很实用但是简单。加颤动好像也不错。螺旋也一样，它建模就是电钻那种了。</span></p><h2><a name="6ffd" class="md-header-anchor"></a><span>6.FFD</span></h2><p><span>这个东西就和那个网格里的磁铁很像，匹配了之后在点模式下移动ffd的点，就有这个效果</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200208160957.png" referrerpolicy="no-referrer"></p><p><span>可以打开这个按钮做点动画，然后加个颤动啊，延迟啊，在父级上再加个细分曲面啥的</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200208161025.png" referrerpolicy="no-referrer"></p><p><span>这玩意真的很实用，比如做可爱风格的石头，数目，可以搞个球体，加这个随意变形。</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200208161440.png" referrerpolicy="no-referrer"></p><h2><a name="7网格" class="md-header-anchor"></a><span>7.网格</span></h2><p><span>这个变形器也非常的实用，它的主要功能在于简单的模型驱动复杂的模型，模型复杂可能会造成下图这样的模拟出错，而且会很卡</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200208171049.png" referrerpolicy="no-referrer"></p><p><span>所以就要做一个简单的模型来驱动他，就是再整一个模型，面数变少了点，最好完全包裹住复杂模型</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200208174029.png" referrerpolicy="no-referrer"></p><p><span>给它柔体标签，下面的地面给碰撞体</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200208174133.png" referrerpolicy="no-referrer"></p><p><span>这个模拟的还可以接受，然后给复杂体下面装个网格</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200208174234.png" referrerpolicy="no-referrer"></p><p><span>网笼里放简单的那个物体，注意柔体标签简单的那个加，复杂的模型不用加，因为网格驱动了，然后给初始化，外部选表面是因为这是让就算有的点没包裹住他也能动。</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200208174435.png" referrerpolicy="no-referrer"></p><p><span>复杂体也正常了</span></p><h2><a name="8挤压和伸展" class="md-header-anchor"></a><span>8.挤压和伸展</span></h2><p><span>这个挤压就是真正的挤压了，是那种把模型拉来拉去的那种，可以用来做弹性动画</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200208211432.png" referrerpolicy="no-referrer"></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200208211452.png" referrerpolicy="no-referrer"></p><p><span>通过打关键帧和延迟颤动的配合就可以。在第一张图上可以看到顶端的横杠和下面的还有中间的，这是几个重要的参数，第二张图就是将中间放到物体的底端，上端放到物体的上端再调节因子做的。</span></p><h2><a name="9溶解" class="md-header-anchor"></a><span>9.溶解</span></h2><p><span>这个真就没啥说的了，加上去就是融成了一滩水了，调强度位置啥的，等我遇到了有些好玩的东西的时候再加讲解。</span></p><h1><a name="二一些练习" class="md-header-anchor"></a><span>二.一些练习</span></h1><h2><a name="1先整个草" class="md-header-anchor"></a><span>1.先整个草</span></h2><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/草长了出来.gif" referrerpolicy="no-referrer"></p><p><span>c4d里做也非常的粗暴，主要是这个泛用性强，而且我们能一键改叶片数，随机叶子的大小，长的不满意也可以改，也就是做那种萌萌的动画就能随意复制粘贴一键改草的样子，直接调种子就可以</span></p><p><span>先做其中一片叶子，这个非常的简单，你大不了就去网上找个那种很细的叶子用多边形描，中间往下凹一点就行。我是用平面，然后用上面说的FFD调出来的，当然调完了之后改成可编辑对象，再细微地改些点</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200214000349.png" referrerpolicy="no-referrer"></p><p><span>这个就是一片叶子（那个弯曲的是我的扭曲，没错等会用扭曲做）</span></p><p><span>然后在这个叶子下面加扭曲，下面是每个叶子的动作</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/叶子动.gif" referrerpolicy="no-referrer"></p><p><span>其实并不困难，我们在扭曲上打上一些关键帧，都是在强度上打的其实第一二个关键帧就已经够了，但是因为要弹~~起来，所以我多打了几个让他震动起来</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200214000815.png" referrerpolicy="no-referrer"></p><p><span>当然我们的细分曲面上也要打关键帧，这是打在旋转上的，和上面扭曲的类似，就有这个效果了。</span></p><p><span>然后我们用克隆效果器，注意让克隆的位置和细分曲面的位置对准（你可以试试不对准会发生啥然后你就明白为啥要对准了）下面是克隆的数值</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200214001218.png" referrerpolicy="no-referrer"></p><p><span>没错我又给了随机和简易，随机时间和旋转和缩放，简易用来调整大小和整体的时间偏移，比如我要做5个这个草，每个给他几个不同的时间偏移。</span></p><p><span>简易效果器的参数，整体的时间偏移在这</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200214001448.png" referrerpolicy="no-referrer"></p><p><span>随机分布的时间偏移</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200214001525.png" referrerpolicy="no-referrer"></p><p><span>然后给他们打成一个组。（alt+g）</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200214001701.png" referrerpolicy="no-referrer"></p><h2><a name="2做个石头" class="md-header-anchor"></a><span>2.做个石头</span></h2><p><span>这个石头有两种方法，很相似</span></p><h3><a name="1用ffd加颤动做" class="md-header-anchor"></a><span>1.用ffd加颤动做</span></h3><p><span>做一个球体，然后选20面体，下面挂FFD和置换，置换贴图选燥波，贴图缩放大一点，FFD就直接匹配对象，然后3x3x3的网格，大概拖拽成这个样子</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200214235835.png" referrerpolicy="no-referrer"></p><p><span>在点模式下拖拽ffd的点做关键帧动画</span></p><p><span>然后就可以加个颤动上去，因为只想让上面动，所以记得调节衰减线性中心在物体底部，让他上面有颤动。然后颤动调节强度啥的，觉得可以了就计算，然后烘培成点级别动画。烘培的插件就是这个东西</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200215000413.png" referrerpolicy="no-referrer"></p><p><span>再加上细分曲面</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200214235736.png" referrerpolicy="no-referrer"></p><p><span>然后加上细分曲面，加一个克隆，就克隆一个，方便之后加简易效果器。我在克隆上做了缩放从0到1的关键帧，我是想让他出现的。</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200215000541.png" referrerpolicy="no-referrer"></p><h3><a name="2用挤压伸展自己k关键帧做" class="md-header-anchor"></a><span>2.用挤压&amp;伸展自己k关键帧做</span></h3><p><span>这个就是一点区别，就是把颤动换成挤压&amp;伸展，然后在挤压上调节关键帧动画，不用计算也不用转换成点动画（颤动变成点动画是因为，这个计算量比较大，可能会卡，变成点动画，就把计算结果缓存了起来，就是用空间换时间）</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200215000859.png" referrerpolicy="no-referrer"></p><p><span>上面两种方式做出来结果可能比较相似，就像这样。</span></p><p><img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/石头出来了.gif" referrerpolicy="no-referrer"></p><p>&nbsp;</p><p>&nbsp;</p></div>
+</body>
+<script>
+    function IFrameResize(){
+//alert(this.document.body.scrollHeight); //弹出当前页面的高度
+        var obj = parent.document.getElementById("childFrame"); //取得父页面IFrame对象
+//alert(obj.height); //弹出父页面中IFrame中设置的高度
+        obj.height = this.document.body.scrollHeight; //调整父页面中IFrame的高度为此页面的高度
+    }
+</script>
+</html>

@@ -1,0 +1,310 @@
+
+
+
+<!DOCTYPE html>
+<!--<%@ page contentType="text/html;charset=utf-8"%>-->
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>个人主页</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="dist/css/layui.css" media="all">
+    <link rel="stylesheet" href="dist/css/template.css" media="all">
+    <link rel="stylesheet" href="dist/css/admin.css" media="all">
+</head>
+<body>
+
+
+<div class="layui-fluid layadmin-homepage-fluid">
+    <div class="layui-row layui-col-space8">
+        <div class="layui-col-md2">
+            <div class="layadmin-homepage-panel layadmin-homepage-shadow">
+                <div class="layui-card text-center">
+                    <div class="layui-card-body">
+                        <div class="layadmin-homepage-pad-ver">
+                            <img class="layadmin-homepage-pad-img" src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/sp191119_164653.png" width="96" height="96">
+                        </div>
+                        <h4 class="layadmin-homepage-font">小帆</h4>
+                        <p class="layadmin-homepage-min-font">江南大学学生</p>
+                        <div class="layadmin-homepage-pad-ver">
+                            <a href="javascript:;" class="layui-icon layui-icon-cellphone" ></a>
+                            <a href="javascript:;" class="layui-icon layui-icon-vercode"></a>
+                            <a href="javascript:;" class="layui-icon layui-icon-login-wechat" onclick="wechattanchuang()"></a>
+                            <a href="javascript:;" class="layui-icon layui-icon-login-qq" onclick="qqtanchuang()"></a>
+                        </div>
+                        <button class="layui-btn layui-btn-fluid">收藏</button>
+                    </div>
+                </div>
+                <p class="layadmin-homepage-about">
+                    关于我
+                </p>
+                <ul class="layadmin-homepage-list-group">
+                    <li class="list-group-item"><i class="layui-icon layui-icon-location"></i>中国无锡</li>
+                    <li class="list-group-item"><a href="javascript:jumpB();" class="color"><i class="layui-icon layui-icon-snowflake"></i><span style="word-wrap:break-word;">https://space.bilibili.com/41369081</span></a></li>
+                </ul>
+                <div class="layadmin-homepage-pad-hor">
+                    <mdall>普通数字媒体技术系学生（软件工程），喜欢没事写点代码和做些特效视频，挺喜欢钻研，有时候也钻牛角尖</mdall>
+                </div>
+                <p class="layadmin-homepage-about">
+                    技能
+                </p>
+                <ul class="layadmin-homepage-list-inline">
+                    <a href="javascript:;" class="layui-btn layui-btn-primary">学生</a>
+                    <a href="javascript:;" class="layui-btn layui-btn-primary">程序员</a>
+                    <a href="javascript:;" class="layui-btn layui-btn-primary">前后端</a>
+                    <a href="javascript:;" class="layui-btn layui-btn-primary">剪辑</a>
+                    <a href="javascript:;" class="layui-btn layui-btn-primary">特效</a>
+                    <a href="javascript:;" class="layui-btn layui-btn-primary">建模</a>
+                </ul>
+            </div>
+        </div>
+        <div class="layui-col-md10">
+            <div class="layui-fluid layadmin-homepage-content">
+                <div class="layui-row layui-col-space20 layadmin-homepage-list-imgtxt">
+                    <div class="layui-col-md9">
+                        <div class="grid-demo">
+                            <div class="panel-body layadmin-homepage-shadow">
+                                <a href="javascript:;" class="media-left">
+                                    <img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/sp191119_164653.png" height="46px" width="46px">
+                                </a>
+                                <div class="media-body">
+                                    <div class="pad-btm" onclick="jumpToSubwebPage(this)" id="aeused">
+                                        <p class="fontColor"><a href="javascript:;">小帆</a>为<span>视频技术</span>添加了新的<span>照片</span></p>
+                                        <p class="min-font">
+                                            <span class="layui-breadcrumb" lay-separator="-">
+                                            <a href="javascript:;" class="layui-icon layui-icon-cellphone"></a><a href="javascript:;">从移动</a>
+                                            <a href="javascript:;">1小时前</a>
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <p>因为我之前有一门课叫做动画设计原理，我大作业用AE做的，所以防止忘记一些操作，在这里写下来，包括一些非常常用的快捷键，功能，插件,最后附上我之前做的一个视频</p>
+                                    <img class="h-img" src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/909bdbc014d95bb24a9eaa2271dfb835_20200112220126.png" >
+                                    <div class="media">
+                                        <div class="media-right">
+                                            <ul class="list-inline">
+                                                <li>
+                                                    <i class="layui-icon layui-icon-rate-solid"></i>
+                                                    <span>95</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body layadmin-homepage-shadow" >
+                                <a href="javascript:;" class="media-left">
+                                    <img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/sp191119_164653.png" height="46px" width="46px">
+                                </a>
+                                <div class="media-body">
+                                    <div class="pad-btm" id="gameuitest" onclick="jumpToSubwebPage(this)">
+                                        <p class="fontColor"><a href="javascript:;">小帆</a>为<span>视频技术</span>添加了新的<span>照片</span></p>
+                                        <p class="min-font">
+                                            <span class="layui-breadcrumb" lay-separator="-">
+                                                <a href="javascript:;" class="layui-icon layui-icon-cellphone"></a>
+                                                <a href="javascript:;">从移动</a>
+                                                <a href="javascript:;">11分钟前</a>
+                                            </span>
+                                        </p>
+                                    </div>
+
+                                    <p>之前游戏设计大作业和几位同学一起完成，我做的部分是游戏ui和特效部分，简单地说就是游戏的脸面部分确实是我在做，以下的游戏模型和动画确实是找别人的。</p>
+                                    <img class="h-img" src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/d52138b081113bc68c295be0687b11d7_image-20200112164103708.png">
+                                    <div class="media">
+                                        <div class="media-right">
+                                            <ul class="list-inline">
+                                                <li>
+                                                    <i class="layui-icon layui-icon-rate-solid"></i>
+                                                    <span>105</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-col-md3">
+                        <div class="grid-demo">
+                            <div class="layui-card homepage-top">
+                                <div class="layui-card-header">
+                                    <h3 class="panel-title">
+                                        <i class="layui-icon layui-icon-picture"></i>
+                                        画廊
+                                    </h3>
+                                </div>
+                                <div class="layui-card-body">
+                                    <div class="layui-row layui-col-space14">
+                                        <div class="layui-col-md4">
+                                            <img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/f7a7d538c31576c8b6a43b47fbcd3f43_image-20200112191759717.png">
+                                        </div>
+                                        <div class="layui-col-md4">
+                                            <img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200206170622.png">
+                                        </div>
+                                        <div class="layui-col-md4">
+                                            <img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/ab03783908909b166d0a3ee846aadfd3_image-20200112174040945.png">
+                                        </div>
+                                        <div class="layui-col-md4">
+                                            <img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/a71c5ba69c3f7c0b1259515ce2b759eb_image-20200112171612968.png">
+                                        </div>
+                                        <div class="layui-col-md4">
+                                            <img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/d52138b081113bc68c295be0687b11d7_image-20200112164103708.png">
+                                        </div>
+                                        <div class="layui-col-md4">
+                                            <img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200510171319.png">
+                                        </div>
+                                        <div class="layui-col-md4">
+                                            <img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200510165356.png">
+                                        </div>
+                                        <div class="layui-col-md12 margin-top10">
+                                            <a href="javascript:;"  class="layui-btn layui-btn-primary">更多</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-card homepage-bottom">
+                                <div class="layui-card-header">
+                                    <h3 class="panel-title">
+                                        <i class="layui-icon layui-icon-user"></i>
+                                        私信
+                                    </h3>
+                                </div>
+                                <div class="layui-card-body">
+                                    <a href="javascript:;" class="layadmin-privateletterlist-item">
+                                        <div class="meida-left">
+                                            <img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200617150526.png">
+                                        </div>
+                                        <div class="meida-right">
+                                            <p>东方丈助</p>
+                                            <mdall>只有经历过地狱般的磨砺，才能练就创造天堂的力量；只有流过血的手指，才能弹出世间的绝响</mdall>
+                                        </div>
+                                    </a>
+                                    <a href="javascript:;" class="layadmin-privateletterlist-item">
+                                        <div class="meida-left">
+                                            <img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200617150623.png">
+                                        </div>
+                                        <div class="meida-right">
+                                            <p>空条承太郎</p>
+                                            <mdall>你以为挑起生活的担子是勇气，其实去过自己真正想要的生活才更需要勇气</mdall>
+                                        </div>
+                                    </a>
+                                    <a href="javascript:;" class="layadmin-privateletterlist-item">
+                                        <div class="meida-left">
+                                            <img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200617150653.png">
+                                        </div>
+                                        <div class="meida-right">
+                                            <p>花京院典明</p>
+                                            <mdall>没有目的，就做不成任何事情；目的渺小，就做不成任何大事</mdall>
+                                        </div>
+                                    </a>
+                                    <a href="javascript:;" class="layadmin-privateletterlist-item">
+                                        <div class="meida-left">
+                                            <img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200617150740.png">
+                                        </div>
+                                        <div class="meida-right">
+                                            <p>乔鲁诺乔巴拿</p>
+                                            <mdall>生活就像海洋，只有意志坚强的人，才能到达彼岸。</mdall>
+                                        </div>
+                                    </a>
+                                    <a href="javascript:;" class="layadmin-privateletterlist-item">
+                                        <div class="meida-left">
+                                            <img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200617150857.png">
+                                        </div>
+                                        <div class="meida-right">
+                                            <p>杉本玲美</p>
+                                            <mdall>未曾失败的人恐怕也未曾成功过</mdall>
+                                        </div>
+                                    </a>
+                                    <a href="javascript:;" class="layadmin-privateletterlist-item">
+                                        <div class="meida-left">
+                                            <img src="https://fanimgsave.oss-cn-shenzhen.aliyuncs.com/img/20200617151049.png">
+                                        </div>
+                                        <div class="meida-right">
+                                            <p>迪奥布兰多</p>
+                                            <mdall>在这个并非尽善尽美的世界上，勤奋会得到报偿，而游手好闲则要受到惩罚</mdall>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="layui-col-md-offset4">
+            <div class="layui-btn-group">
+                <button type="button" class="layui-btn" onclick="jump1()">1</button>
+                <button type="button" class="layui-btn" onclick="jump2()">2</button>
+                <button type="button" class="layui-btn" onclick="jump3()">3</button>
+                <button type="button" class="layui-btn" onclick="jump4()">4</button>
+                <button type="button" class="layui-btn" onclick="jump5()">5</button>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="dist/layui.all.js"></script>
+<script>
+    layui.config({
+        base: '../../layuiadmin/' //静态资源所在路径
+    }).extend({
+        index: 'lib/index' //主入口模块
+    }).use(['index']);
+    function jump1() {
+         window.location.href="admin1.html";//直接在原网页跳转
+    }
+    function jump2() {
+        window.location.href="admin2.html";//直接在原网页跳转
+    }
+    function jump3() {
+        window.location.href="admin3.html";//直接在原网页跳转
+    }
+    function jump4() {
+        window.location.href="admin4.html";//直接在原网页跳转
+    }
+    function jump5() {
+        window.location.href="admin5.html";//直接在原网页跳转
+    }
+    function jumpB() {
+        // window.location.href="https://space.bilibili.com/41369081";//直接在原网页跳转
+        window.open ('https://space.bilibili.com/41369081') ;//在另一个标签页上打开
+    }
+    function jumpToSubwebPage(e) {
+        var a=e.id;
+        var b="admin1"
+        var myurl="subwebPage.html?id="+a+"&admin="+b;
+        window.location.href=myurl;
+        // location.href='subwebPage.html?'+'txt=' + encodeURI(a.value);
+        //window.location.href="subwebPage.html";//直接在原网页跳转
+    }
+    function qqtanchuang() {
+        layer.config({
+            anim: 1, //默认动画风格
+            skin: 'layui-layer-lan' //默认皮肤
+        });
+        layer.open({
+            title: 'QQ联系方式'
+            ,
+            content: '<div class="layui-icon layui-icon-login-qq" style="font-size: 18px;">&nbsp QQ &nbsp&nbsp</div>' +
+                'QQ:1256893098'
+        });
+    }
+    function wechattanchuang() {
+        layer.config({
+            anim: 1, //默认动画风格
+            skin: 'layui-layer-lan' //默认皮肤
+        });
+        layer.open({
+            title: '微信联系方式'
+            ,
+            content: '<div class="layui-icon layui-icon-login-wechat" style="font-size: 18px;">&nbsp 微信 &nbsp&nbsp</div>' +
+                '微信：xyf1256893098'
+        });
+    }
+
+</script>
+</body>
+</html>
